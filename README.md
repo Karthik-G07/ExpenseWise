@@ -1,2 +1,0 @@
-# ExpenseWise
-# expense-tracker
