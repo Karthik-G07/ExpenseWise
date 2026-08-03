@@ -18,4 +18,7 @@ public class UserRequest {
 	
 	@Size(min = 8,message = "password length should be atleast 8")
 	private String password;
+	
+	
+	private String role;
 }
