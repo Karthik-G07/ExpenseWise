@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.expensewise.Requestdto.LoginRequest;
 import com.expensewise.Requestdto.UserRequest;
 import com.expensewise.config.SecurityConfig;
 import com.expensewise.entity.User;
 import com.expensewise.exception.EmailAlreadyExistsException;
 import com.expensewise.mapper.UserMapper;
 import com.expensewise.repository.UserRepository;
+import com.expensewise.responsedto.LoginResponse;
 import com.expensewise.responsedto.UserResponse;
 import com.expensewise.service.AuthService;
 
@@ -41,6 +43,20 @@ public class AuthSerivceImpl implements AuthService {
 		
 		
 		return UserMapper.toResponse(user);
+	}
+
+
+	@Override
+	public LoginResponse login(LoginRequest req) {
+		
+		User user=urepo.findByEmail(req.getEmail()).orElseThrow(()->new RuntimeException("email not found"));
+		
+		if(!pencode.matches(req.getPasword(), user.getPassword()))
+		{
+			throw new RuntimeException("password mismatch");
+		}
+		
+		return new LoginResponse("login sucess");
 	}
 
 }

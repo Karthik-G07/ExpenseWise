@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.expensewise.Requestdto.LoginRequest;
 import com.expensewise.Requestdto.UserRequest;
+import com.expensewise.responsedto.LoginResponse;
 import com.expensewise.responsedto.UserResponse;
 import com.expensewise.service.impl.AuthSerivceImpl;
 
@@ -27,6 +29,14 @@ public class AuthController {
 		UserResponse ures=srv.register(req);
 		
 		return ResponseEntity.ok(ures);
+	}
+	
+	@PostMapping("/login")
+	public ResponseEntity<?> login(@RequestBody LoginRequest req)
+	{
+	  LoginResponse logins=	srv.login(req);
+		 
+		return ResponseEntity.ok(logins);
 	}
 	
 }
