@@ -1,5 +1,6 @@
 package com.expensewise.service.impl;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -7,9 +8,9 @@ import org.springframework.stereotype.Service;
 import com.expensewise.Requestdto.LoginRequest;
 import com.expensewise.Requestdto.UserRequest;
 import com.expensewise.config.SecurityConfig;
+import com.expensewise.constants.Role;
 import com.expensewise.entity.User;
 import com.expensewise.exception.EmailAlreadyExistsException;
-import com.expensewise.mapper.UserMapper;
 import com.expensewise.repository.UserRepository;
 import com.expensewise.responsedto.LoginResponse;
 import com.expensewise.responsedto.UserResponse;
@@ -24,6 +25,9 @@ public class AuthSerivceImpl implements AuthService {
 	@Autowired
 	private PasswordEncoder pencode;
 	
+	@Autowired
+	private ModelMapper mapper;
+	
 	
 	@Override
 	public UserResponse register(UserRequest req) {
@@ -34,15 +38,16 @@ public class AuthSerivceImpl implements AuthService {
 		});
 		
 		
-		User user=UserMapper.toEntity(req);
-		
+		User user=mapper.map(req, User.class);
+		user.setRole(Role.USER);
 		user.setPassword(pencode.encode(req.getPassword()));
 		
 		user=urepo.save(user);
 		
 		
+				UserResponse ures=mapper.map(user, UserResponse.class);
 		
-		return UserMapper.toResponse(user);
+		return ures;
 	}
 
 
@@ -53,10 +58,10 @@ public class AuthSerivceImpl implements AuthService {
 		
 		if(!pencode.matches(req.getPasword(), user.getPassword()))
 		{
-			throw new RuntimeException("password mismatch");
+			throw new RuntimeException("password miss_match!");
 		}
 		
-		return new LoginResponse("login sucess");
+		return new LoginResponse("login ");
 	}
 
 }
