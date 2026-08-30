@@ -14,6 +14,7 @@ import com.expensewise.exception.EmailAlreadyExistsException;
 import com.expensewise.repository.UserRepository;
 import com.expensewise.responsedto.LoginResponse;
 import com.expensewise.responsedto.UserResponse;
+import com.expensewise.security.JwtService;
 import com.expensewise.service.AuthService;
 
 @Service
@@ -27,6 +28,13 @@ public class AuthSerivceImpl implements AuthService {
 	
 	@Autowired
 	private ModelMapper mapper;
+	
+	@Autowired
+	private MailServiceImpl mailser;
+	
+	@Autowired
+	private JwtService jwtserv;
+	
 	
 	
 	@Override
@@ -44,9 +52,10 @@ public class AuthSerivceImpl implements AuthService {
 		
 		user=urepo.save(user);
 		
-		
+//		mailser.sendMail(user.getEmail());
 				UserResponse ures=mapper.map(user, UserResponse.class);
 		
+				
 		return ures;
 	}
 
@@ -56,12 +65,14 @@ public class AuthSerivceImpl implements AuthService {
 		
 		User user=urepo.findByEmail(req.getEmail()).orElseThrow(()->new RuntimeException("email not found"));
 		
-		if(!pencode.matches(req.getPasword(), user.getPassword()))
+		if(!pencode.matches(req.getPassword(), user.getPassword()))
+		
 		{
 			throw new RuntimeException("password miss_match!");
 		}
+		String token =jwtserv.generateToken(user.getEmail());
 		
-		return new LoginResponse("login ");
+		return new LoginResponse("login ",token);
 	}
 
 }
