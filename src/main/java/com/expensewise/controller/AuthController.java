@@ -20,8 +20,8 @@ import com.expensewise.service.impl.AuthSerivceImpl;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
-//@RestController
-//@RequestMapping("api/auth")
+@RestController
+@RequestMapping("api/auth")
 public class AuthController {
 	
 	@Autowired

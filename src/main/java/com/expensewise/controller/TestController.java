@@ -18,8 +18,8 @@ import com.expensewise.responsedto.LoginResponse;
 import com.expensewise.service.impl.AuthSerivceImpl;
 
 
-@RestController
-@RequestMapping("/api/test")
+//@RestController
+//@RequestMapping("/api/test")
 public class TestController {
 
 	@Autowired

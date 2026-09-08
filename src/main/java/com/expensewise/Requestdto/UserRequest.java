@@ -1,3 +1,4 @@
+
 package com.expensewise.Requestdto;
 
 import jakarta.validation.constraints.Email;
@@ -6,7 +7,6 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-
 public class UserRequest { 
  
 	@NotBlank(message = "name is required")

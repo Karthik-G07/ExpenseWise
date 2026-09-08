@@ -70,9 +70,9 @@ public class AuthSerivceImpl implements AuthService {
 		{
 			throw new RuntimeException("password miss_match!");
 		}
-		String token =jwtserv.generateToken(user.getEmail());
+//		String token =jwtserv.generateToken(user.getEmail());
 		
-		return new LoginResponse("login ",token);
+		return new LoginResponse("login ");
 	}
 
 }
